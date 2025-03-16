@@ -1,65 +1,52 @@
-package org.vw.domain;
+package org.vw.domain
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
-public class Position {
-    private final Grid grid;
-    private int x;
-    private int y;
-    private Direction direction;
-
-    public enum Direction {
+class Position(private val grid: Grid, var x: Int, var y: Int, var direction: Direction) {
+    enum class Direction {
         N, E, S, W
     }
 
-    public Position(Grid grid, int x, int y, Direction direction) {
-        this.grid = grid;
+    init {
         if (!grid.isCellAvailable(x, y)) {
-            throw new IndexOutOfBoundsException("Position "+x+" "+y+" out of grill bounds");
+            throw IndexOutOfBoundsException("Position $x $y out of grill bounds")
         }
-        this.x = x;
-        this.y = y;
-        this.direction = direction;
     }
 
-    public void moveForward() {
-        int newX = x, newY = y;
+    fun moveForward() {
+        var newX = x
+        var newY = y
 
-        switch (direction) {
-            case N -> newY += 1;
-            case S -> newY -= 1;
-            case E -> newX += 1;
-            case W -> newX -= 1;
+        when (direction) {
+            Direction.N -> newY += 1
+            Direction.S -> newY -= 1
+            Direction.E -> newX += 1
+            Direction.W -> newX -= 1
         }
 
         if (grid.isCellAvailable(newX, newY)) {
-            this.x = newX;
-            this.y = newY;
+            this.x = newX
+            this.y = newY
         }
     }
 
-    public void rotateLeft() {
-        direction = switch (direction) {
-            case N -> Direction.W;
-            case W -> Direction.S;
-            case S -> Direction.E;
-            case E -> Direction.N;
-        };
+    fun rotateLeft() {
+        direction = when (direction) {
+            Direction.N -> Direction.W
+            Direction.W -> Direction.S
+            Direction.S -> Direction.E
+            Direction.E -> Direction.N
+        }
     }
 
-    public void rotateRight() {
-        direction = switch (direction) {
-            case N -> Direction.E;
-            case E -> Direction.S;
-            case S -> Direction.W;
-            case W -> Direction.N;
-        };
+    fun rotateRight() {
+        direction = when (direction) {
+            Direction.N -> Direction.E
+            Direction.E -> Direction.S
+            Direction.S -> Direction.W
+            Direction.W -> Direction.N
+        }
     }
 
-    public String toString() {
-        return x + " " + y + " " + direction;
+    override fun toString(): String {
+        return "$x $y $direction"
     }
 }

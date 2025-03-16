@@ -1,38 +1,37 @@
-package org.vw.infrastructure;
+package org.vw.infrastructure
 
-import org.vw.domain.CleaningRobot;
-import org.vw.domain.Grid;
+import org.vw.domain.Grid
 
-public class GridVisualizer {
-    public static void printGrid(Grid grid) {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+object GridVisualizer {
+    fun printGrid(grid: Grid) {
+        print("\u001b[H\u001b[2J")
+        System.out.flush()
 
-        for (int y = grid.getMaxY(); y >= 0; y--) {
-            System.out.print(" " + ((y < grid.getMaxY()) ? y : "-") + " ");
-            for (int x = 0; x < grid.getMaxX(); x++) {
-                if (y == grid.getMaxY()) {
-                    System.out.print(" " + x + "  ");
-                    continue;
+        for (y in grid.maxY downTo 0) {
+            print(" " + (if (y < grid.maxY) y else "-") + " ")
+            for (x in 0..<grid.maxX) {
+                if (y == grid.maxY) {
+                    print(" $x  ")
+                    continue
                 }
-                String cellContent = "  ";
-                for (int robotIndex = 0; robotIndex < grid.getRobots().size(); robotIndex++) {
-                    CleaningRobot robot = grid.getRobots().get(robotIndex);
-                    if (robot.getPosition().getX() == x && robot.getPosition().getY() == y) {
-                        cellContent = (robotIndex + 1) + "" + robot.getPosition().getDirection();
-                        break;
+                var cellContent = "  "
+                for (robotIndex in grid.robots.indices) {
+                    val robot = grid.robots[robotIndex]
+                    if (robot.position.x == x && robot.position.y == y) {
+                        cellContent = (robotIndex + 1).toString() + "" + robot.position.direction
+                        break
                     }
                 }
-                System.out.print("[" + cellContent + "]");
+                print("[$cellContent]")
             }
-            System.out.println();
+            println()
         }
-        System.out.println();
+        println()
 
         try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+            Thread.sleep(500)
+        } catch (e: InterruptedException) {
+            Thread.currentThread().interrupt()
         }
     }
 }

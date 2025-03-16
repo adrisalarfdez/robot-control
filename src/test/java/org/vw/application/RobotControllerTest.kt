@@ -1,55 +1,51 @@
-package org.vw.application;
+package org.vw.application
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
+import org.vw.application.RobotController.main
+import java.io.ByteArrayOutputStream
+import java.io.PrintStream
+import java.util.*
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import java.net.URL;
-import java.util.Objects;
-
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-class RobotControllerTest {
-
+internal class RobotControllerTest {
     @Test
-    void testMain_ExecutesWithoutCrashing() {
-        URL file = Objects.requireNonNull(getClass().getClassLoader().getResource("test-input.txt"));
-        String[] args = {file.getPath()};
+    fun testMain_ExecutesWithoutCrashing() {
+        val file = Objects.requireNonNull(javaClass.classLoader.getResource("test-input.txt"))
+        val args = arrayOf(file.path)
 
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outputStream));
+        val outputStream = ByteArrayOutputStream()
+        System.setOut(PrintStream(outputStream))
 
-        RobotController.main(args);
+        main(args)
 
-        String output = outputStream.toString();
-        assertFalse(output.isBlank(), "Execution output should not be empty.");
+        val output = outputStream.toString()
+        Assertions.assertFalse(output.isBlank(), "Execution output should not be empty.")
     }
 
     @Test
-    void testMain_WithShowGridOption() {
-        URL file = Objects.requireNonNull(getClass().getClassLoader().getResource("test-input.txt"));
-        String[] args = {file.getPath(), "--show-grid"};
+    fun testMain_WithShowGridOption() {
+        val file = Objects.requireNonNull(javaClass.classLoader.getResource("test-input.txt"))
+        val args = arrayOf(file.path, "--show-grid")
 
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outputStream));
+        val outputStream = ByteArrayOutputStream()
+        System.setOut(PrintStream(outputStream))
 
-        RobotController.main(args);
+        main(args)
 
-        String output = outputStream.toString();
-        assertTrue(output.contains("["), "Execution output should show the grid.");
+        val output = outputStream.toString()
+        Assertions.assertTrue(output.contains("["), "Execution output should show the grid.")
     }
 
     @Test
-    void testMain_InvalidFile_DoesNotCrash() {
-        String[] args = {"nonexistent-file.txt"};
+    fun testMain_InvalidFile_DoesNotCrash() {
+        val args = arrayOf("nonexistent-file.txt")
 
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outputStream));
+        val outputStream = ByteArrayOutputStream()
+        System.setOut(PrintStream(outputStream))
 
-        RobotController.main(args);
+        main(args)
 
-        String output = outputStream.toString();
-        assertTrue(output.contains("Error"), "Uncontrolled errors when non-existent is file provided.");
+        val output = outputStream.toString()
+        Assertions.assertTrue(output.contains("Error"), "Uncontrolled errors when non-existent is file provided.")
     }
 }

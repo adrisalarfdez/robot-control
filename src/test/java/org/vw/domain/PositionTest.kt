@@ -1,40 +1,39 @@
-package org.vw.domain;
+package org.vw.domain
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-class PositionTest {
-    private Position position;
+internal class PositionTest {
+    private var position: Position? = null
 
     @BeforeEach
-    void setUp() {
-        position = new Position(new Grid(5, 5), 2, 2, Position.Direction.N);
+    fun setUp() {
+        position = Position(Grid(5, 5), 2, 2, Position.Direction.N)
     }
 
     @Test
-    void testMoveForward_ValidMove() {
-        position.moveForward();
-        assertEquals(3, position.getY());
+    fun testMoveForward_ValidMove() {
+        position!!.moveForward()
+        Assertions.assertEquals(3, position!!.y)
     }
 
     @Test
-    void testMoveForward_InvalidMove() {
-        position.setY(5);
-        position.moveForward();
-        assertEquals(5, position.getY());
+    fun testMoveForward_InvalidMove() {
+        position!!.y = 5
+        position!!.moveForward()
+        Assertions.assertEquals(5, position!!.y)
     }
 
     @Test
-    void testRotateLeft() {
-        position.rotateLeft();
-        assertEquals(Position.Direction.W, position.getDirection());
+    fun testRotateLeft() {
+        position!!.rotateLeft()
+        Assertions.assertEquals(Position.Direction.W, position!!.direction)
     }
 
     @Test
-    void testRotateRight() {
-        position.rotateRight();
-        assertEquals(Position.Direction.E, position.getDirection());
+    fun testRotateRight() {
+        position!!.rotateRight()
+        Assertions.assertEquals(Position.Direction.E, position!!.direction)
     }
 }

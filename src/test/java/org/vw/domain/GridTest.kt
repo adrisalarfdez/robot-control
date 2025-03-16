@@ -1,41 +1,39 @@
-package org.vw.domain;
+package org.vw.domain
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-class GridTest {
-    private Grid grid;
-    private CleaningRobot robot;
+internal class GridTest {
+    private var grid: Grid? = null
+    private var robot: CleaningRobot? = null
 
     @BeforeEach
-    void setUp() {
-        grid = new Grid(5, 5);
-        Position startPosition = new Position(grid, 2, 2, Position.Direction.N);
-        robot = new CleaningRobot(startPosition, new char[]{});
+    fun setUp() {
+        grid = Grid(5, 5)
+        val startPosition = Position(grid!!, 2, 2, Position.Direction.N)
+        robot = CleaningRobot(startPosition, listOf())
     }
 
     @Test
-    void testAddRobot() {
-        grid.addRobot(robot);
-        assertTrue(grid.getRobots().contains(robot));
+    fun testAddRobot() {
+        grid!!.addRobot(robot!!)
+        Assertions.assertTrue(grid!!.robots.contains(robot))
     }
 
     @Test
-    void testIsInsideGrid_ValidPosition() {
-        assertTrue(grid.isCellAvailable(3, 3));
+    fun testIsInsideGrid_ValidPosition() {
+        Assertions.assertTrue(grid!!.isCellAvailable(3, 3))
     }
 
     @Test
-    void testIsInsideGrid_InvalidPosition() {
-        assertFalse(grid.isCellAvailable(6, 6));
+    fun testIsInsideGrid_InvalidPosition() {
+        Assertions.assertFalse(grid!!.isCellAvailable(6, 6))
     }
 
     @Test
-    void testIsCellOccupied() {
-        grid.addRobot(robot);
-        assertFalse(grid.isCellAvailable(2, 2));
+    fun testIsCellOccupied() {
+        grid!!.addRobot(robot!!)
+        Assertions.assertFalse(grid!!.isCellAvailable(2, 2))
     }
 }

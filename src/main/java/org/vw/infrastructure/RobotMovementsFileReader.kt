@@ -1,52 +1,46 @@
-package org.vw.infrastructure;
+package org.vw.infrastructure
 
-import org.vw.domain.CleaningRobot;
-import org.vw.domain.Grid;
-import org.vw.domain.Position;
+import org.vw.domain.CleaningRobot
+import org.vw.domain.Grid
+import org.vw.domain.Position
+import org.vw.domain.Position.Direction
+import java.io.File
+import java.io.FileNotFoundException
+import java.util.*
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
-
-public class RobotMovementsFileReader {
-    private final String filePath;
-
-    public RobotMovementsFileReader(String filePath) {
-        this.filePath = filePath;
-    }
-
-    public Grid loadFileContents() {
-        Scanner scanner = null;
-        Grid grid = null;
+class RobotMovementsFileReader(private val filePath: String) {
+    fun loadFileContents(): Grid? {
+        var scanner: Scanner? = null
+        var grid: Grid? = null
 
         try {
-            File inputFile = new File(filePath);
+            val inputFile = File(filePath)
 
-            System.out.println("Reading input file: " + filePath);
-            scanner = new Scanner(inputFile);
+            println("Reading input file: $filePath")
+            scanner = Scanner(inputFile)
 
-            int gridX = scanner.nextInt();
-            int gridY = scanner.nextInt();
-            grid = new Grid(gridX + 1, gridY + 1);
-            scanner.nextLine();
+            val gridX = scanner.nextInt()
+            val gridY = scanner.nextInt()
+            grid = Grid(gridX + 1, gridY + 1)
+            scanner.nextLine()
 
             while (scanner.hasNextLine()) {
-                int x = scanner.nextInt();
-                int y = scanner.nextInt();
-                Position.Direction direction = Position.Direction.valueOf(scanner.next());
-                scanner.nextLine();
+                val x = scanner.nextInt()
+                val y = scanner.nextInt()
+                val direction = Direction.valueOf(scanner.next())
+                scanner.nextLine()
 
-                if (!scanner.hasNextLine()) break;
-                String commands = scanner.nextLine();
+                if (!scanner.hasNextLine()) break
+                val commands = scanner.nextLine()
 
-                CleaningRobot robot = new CleaningRobot(new Position(grid, x, y, direction), commands.toCharArray());
-                grid.addRobot(robot);
+                val robot = CleaningRobot(Position(grid, x, y, direction), commands.toCharArray().toList())
+                grid.addRobot(robot)
             }
-        } catch (FileNotFoundException e) {
-            System.out.println("Error: File not found");
+        } catch (e: FileNotFoundException) {
+            println("Error: File not found")
         } finally {
-            if (scanner != null) scanner.close();
+            scanner?.close()
         }
-        return grid;
+        return grid
     }
 }
